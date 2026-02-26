@@ -21,32 +21,22 @@ def sumar():
             return render_template("suma.html", resultado=resultado)
     return render_template("suma.html")
 
-
 @app.route('/division', methods=['GET', 'POST'])
 def dividir():
-    resultado = None
-    error = None
-
-    if request.method == 'POST':
-        num1 = request.form.get('num1')
-        num2 = request.form.get('num2')
-
-        if not num1 or not num2:
-            error = "Por favor, ingrese dos números."
+    if request.method == "POST":
+        if not request.form.get("num1") or not request.form.get("num2"):
+            return "Por favor, ingrese dos números válidos."
         else:
-            try:
-                num1 = float(num1)
-                num2 = float(num2)
+            num1 = float(request.form.get("num1"))
+            num2 = float(request.form.get("num2"))
 
-                if num2 == 0:
-                    error = "No se puede dividir entre 0"
-                else:
-                    resultado = num1 / num2
+            if num2 == 0:
+                return "No se puede dividir entre 0"
 
-            except ValueError:
-                error = "Ingrese solo números válidos"
+            resultado = num1 / num2
+            return render_template("division.html", resultado=resultado)
 
-    return render_template('division.html', resultado=resultado, error=error)
+    return render_template("division.html")
 
 if __name__ == '__main__':
     app.run(debug=True) 
